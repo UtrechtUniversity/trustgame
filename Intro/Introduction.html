@@ -1,0 +1,75 @@
+{{ extends 'global/Page.html' }}
+{% block title %}<span style="display:none;">Instruction</span>{% endblock %}
+
+{{ block content }}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f7f9fc;
+        color: #333;
+        line-height: 1.6;
+        padding: 20px;
+    }
+
+    .instruction-box {
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        padding: 25px 30px;
+        max-width: 800px;
+        margin: 40px auto;
+    }
+
+    .instruction-box h1 {
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .instruction-box p {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+    }
+
+    .highlight {
+        font-weight: bold;
+        color: #e67e22;
+    }
+
+    .next-button-container {
+        text-align: center;
+        margin-top: 25px;
+    }
+
+    .next-button-container button {
+        background-color: #3498db;
+        color: #fff;
+        border: none;
+        padding: 12px 25px;
+        font-size: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .next-button-container button:hover {
+        background-color: #2980b9;
+    }
+</style>
+
+<div class="instruction-box">
+    <h1>A Game of Trust!</h1>
+
+    <p>Welcome! In this game, there are two players: Player A and Player B.</p>
+
+    <p>Player A will be endowed <span class="highlight">{{ endowment }}</span> and can choose how many points to send to Player B. The points sent will be multiplied by <span class="highlight">{{ multiplier }}</span> before reaching Player B. Then, Player B decides how many points to send back to Player A.</p>
+
+    <p>Once you have read the instructions, click “Next” to continue. You will then be assigned the role of Player A or Player B.</p>
+
+    <div class="next-button-container">
+        {{ next_button }}
+    </div>
+</div>
+
+{{ endblock content }}

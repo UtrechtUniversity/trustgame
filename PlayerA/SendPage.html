@@ -1,0 +1,76 @@
+{{ extends 'global/Page.html' }}
+{% block title %}<span style="display:none;">Send Points</span>{% endblock %}
+
+{{ block content }}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f7f9fc;
+        color: #333;
+        line-height: 1.6;
+        padding: 20px;
+    }
+
+    .instruction-box {
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        padding: 25px 30px;
+        max-width: 800px;
+        margin: 40px auto;
+    }
+
+    .instruction-box h1 {
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .instruction-box p {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+    }
+
+    .highlight {
+        font-weight: bold;
+        color: #e67e22;
+    }
+
+    .next-button-container {
+        text-align: center;
+        margin-top: 25px;
+    }
+
+    .next-button-container button {
+        background-color: #3498db;
+        color: #fff;
+        border: none;
+        padding: 12px 25px;
+        font-size: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .next-button-container button:hover {
+        background-color: #2980b9;
+    }
+</style>
+
+<div class="instruction-box">
+    <h1>Send Points to Player B</h1>
+
+    <p>You are <span class="highlight">Player A</span>.</p>
+    <p>You have an endowment of <span class="highlight">{{ C.ENDOWMENT }}</span>. Decide how many points you want to send to Player B.</p>
+
+    <p>Points you send will be multiplied by <span class="highlight">{{ C.MULTIPLICATION_FACTOR }}</span> before reaching Player B. Player B will then decide how many points to return to you.</p>
+
+    {{ formfields }}
+
+    <div class="next-button-container">
+        {{ next_button }}
+    </div>
+</div>
+
+{{ endblock content }}
