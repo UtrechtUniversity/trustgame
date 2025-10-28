@@ -1,31 +1,19 @@
 from otree.api import *
 
-doc = """
-Trust Game – Player A decides how many points to send to B
-"""
-
 class C(BaseConstants):
-    NAME_IN_URL = 'trust_A'
+    NAME_IN_URL = 'truster'
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
     ENDOWMENT = cu(10)
     MULTIPLICATION_FACTOR = 3
 
-
-class Subsession(BaseSubsession):
-    pass
-
-class Group(BaseGroup):
-    pass
+class Subsession(BaseSubsession): pass
+class Group(BaseGroup): pass
 
 class Player(BasePlayer):
-    sent_amount = models.CurrencyField(
-        min=0,
-        max=C.ENDOWMENT,
-        label="How much do you want to send?"
-    )
+    sent_amount = models.CurrencyField(min=0, max=C.ENDOWMENT, label="")
 
-class SendPage(Page):
+class Send(Page):
     form_model = 'player'
     form_fields = ['sent_amount']
 
@@ -34,7 +22,12 @@ class SendPage(Page):
         return player.participant.vars.get('role') == 'A'
 
     @staticmethod
+    def vars_for_template(player: Player):
+        return dict(endowment=C.ENDOWMENT)
+
+    @staticmethod
     def before_next_page(player: Player, timeout_happened):
         player.participant.vars['sent_amount'] = player.sent_amount
+        print(f"[DEBUG][truster] A#{player.participant.id_in_session} sent={player.sent_amount}")
 
-page_sequence = [SendPage]
+page_sequence = [Send]
