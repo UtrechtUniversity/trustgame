@@ -25,19 +25,21 @@ def group_by_arrival_time_method(subsession: Subsession, waiting_players):
     return None
 
 class Group(BaseGroup):
-    sent_back_amount = models.CurrencyField(min=0, label="")
+    sent_back_amount = models.CurrencyField(min=0, label="", null=True, blank=True)
 
     def set_payoffs(self):
         a = self.get_player_by_role('A')
         b = self.get_player_by_role('B')
 
         sent = a.participant.vars.get('sent_amount', cu(0))
-        sent_back = self.sent_back_amount or cu(0)
+
+        sent_back = self.field_maybe_none('sent_back_amount') or cu(0)
 
         a.payoff = C.ENDOWMENT - sent + sent_back
         b.payoff = sent * C.MULTIPLIER - sent_back
 
-        print(f"[DEBUG][trustee][payoffs] A sent={sent}, back={sent_back} | A.payoff={a.payoff}, B.payoff={b.payoff}")
+        print(f"[DEBUG][trustee][payoffs] A sent={sent}, back={sent_back} | "
+              f"A.payoff={a.payoff}, B.payoff={b.payoff}")
 
 class Player(BasePlayer):
 
@@ -56,13 +58,28 @@ class SendBack(Page):
 
     @staticmethod
     def is_displayed(player: Player):
-        return player.role() == 'B'
+        # Only displayed for B, and only if A actually sent something
+        if player.role() != 'B':
+            return False
+        a = player.group.get_player_by_role('A')
+        sent = a.participant.vars.get('sent_amount', cu(0))
+        return sent > 0
 
     @staticmethod
     def vars_for_template(player: Player):
         a = player.group.get_player_by_role('A')
         sent = a.participant.vars['sent_amount']
         return dict(sent=sent, tripled=sent * C.MULTIPLIER)
+
+    @staticmethod
+    def error_message(player: Player, values):
+        """Ensure B cannot send back more than received."""
+        a = player.group.get_player_by_role('A')
+        sent = a.participant.vars.get('sent_amount', cu(0))
+        tripled = sent * C.MULTIPLIER
+
+        if values['sent_back_amount'] > tripled:
+            return f"You cannot send back more than {tripled}."
 
 class AWait(WaitPage):
     # A waits for Bs decision
@@ -84,7 +101,7 @@ class Results(Page):
             role=player.role(),
             sent=sent,
             tripled=sent * C.MULTIPLIER,
-            sent_back=player.group.sent_back_amount,
+            sent_back = player.group.field_maybe_none('sent_back_amount') or cu(0),
             payoff=player.payoff,
         )
 

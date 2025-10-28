@@ -60,16 +60,29 @@
 
 <div class="instruction-box">
     <h1>Results</h1>
-    {% if role == 'A' %}
-        <p>You sent <span class="highlight">{{ sent }}</span> to Player B.</p>
-        <p>This amount was multiplied by <span class="highlight">{{ C.MULTIPLIER }}</span>, so Player B received <span class="highlight">{{ tripled }}</span>.</p>
-        <p>Player B returned <span class="highlight">{{ sent_back }}</span> to you.</p>
-        <p>Therefore, your total payoff is <span class="highlight">{{ payoff }}</span>.</p>
+
+    {% if sent == 0 %}
+        {% if role == 'A' %}
+            <p>You decided to send <span class="highlight">0 points</span> to Player B.</p>
+            <p>Since you sent nothing, Player B had no decision to make.</p>
+            <p>Your total payoff is your full endowment: <span class="highlight">{{ payoff }}</span>.</p>
+        {% else %}
+            <p>Player A sent you <span class="highlight">0 points</span>.</p>
+            <p>Because you received nothing, you had no decision to make.</p>
+            <p>Your total payoff is <span class="highlight">{{ payoff }}</span>.</p>
+        {% endif %}
     {% else %}
-        <p>You received <span class="highlight">{{ sent }}</span> from Player A.</p>
-    <p>This amount was multiplied by <span class="highlight">{{ C.MULTIPLIER }}</span>, so you received <span class="highlight">{{ tripled }}</span>.
-        <p>You decided to return <span class="highlight">{{ sent_back }}</span>.</p>
-        <p>Therefore, your total payoff is <span class="highlight">{{ payoff }}</span>.</p>
+        {% if role == 'A' %}
+            <p>You sent <span class="highlight">{{ sent }}</span> to Player B.</p>
+            <p>This amount was multiplied by <span class="highlight">{{ C.MULTIPLIER }}</span>, so Player B received <span class="highlight">{{ tripled }}</span>.</p>
+            <p>Player B returned <span class="highlight">{{ sent_back }}</span> to you.</p>
+            <p>Therefore, your total payoff is <span class="highlight">{{ payoff }}</span>.</p>
+        {% else %}
+            <p>You received <span class="highlight">{{ sent }}</span> from Player A.</p>
+            <p>This amount was multiplied by <span class="highlight">{{ C.MULTIPLIER }}</span>, so you received <span class="highlight">{{ tripled }}</span>.</p>
+            <p>You decided to return <span class="highlight">{{ sent_back }}</span>.</p>
+            <p>Therefore, your total payoff is <span class="highlight">{{ payoff }}</span>.</p>
+        {% endif %}
     {% endif %}
 
     <div class="next-button-container">
