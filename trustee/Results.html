@@ -1,5 +1,5 @@
 {{ extends 'global/Page.html' }}
-{% block title %}<span style="display:none;">Instruction</span>{% endblock %}
+{% block title %}<span style="display:none;">Results</span>{% endblock %}
 
 {{ block content }}
 
@@ -59,17 +59,22 @@
 </style>
 
 <div class="instruction-box">
-    <h1>A Game of Trust!</h1>
-
-    <p>Welcome! In this game, there are two players: Player A and Player B.</p>
-
-    <p>Player A will be endowed <span class="highlight">{{ endowment }}</span> and can choose how many points to send to Player B. The points sent will be multiplied by <span class="highlight">{{ multiplier }}</span> before reaching Player B. Then, Player B decides how many points to send back to Player A.</p>
-
-    <p>Once you have read the instructions, click “Next” to continue. You will then be assigned the role of Player A or Player B.</p>
+    <h1>Results</h1>
+    {% if role == 'A' %}
+        <p>You sent <span class="highlight">{{ sent }}</span> to Player B.</p>
+        <p>This amount was multiplied by <span class="highlight">{{ C.MULTIPLIER }}</span>, so Player B received <span class="highlight">{{ tripled }}</span>.</p>
+        <p>Player B returned <span class="highlight">{{ sent_back }}</span> to you.</p>
+        <p>Therefore, your total payoff is <span class="highlight">{{ payoff }}</span>.</p>
+    {% else %}
+        <p>You received <span class="highlight">{{ sent }}</span> from Player A.</p>
+    <p>This amount was multiplied by <span class="highlight">{{ C.MULTIPLIER }}</span>, so you received <span class="highlight">{{ tripled }}</span>.
+        <p>You decided to return <span class="highlight">{{ sent_back }}</span>.</p>
+        <p>Therefore, your total payoff is <span class="highlight">{{ payoff }}</span>.</p>
+    {% endif %}
 
     <div class="next-button-container">
         {{ next_button }}
     </div>
 </div>
 
-{{ endblock content }}
+{{ endblock }}
