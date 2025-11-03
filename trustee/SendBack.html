@@ -16,9 +16,10 @@
         background-color: #ffffff;
         border-radius: 12px;
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        padding: 25px 30px;
+        padding: 25px 30px 80px;
         max-width: 800px;
         margin: 40px auto;
+        position: relative;
     }
 
     .instruction-box h1 {
@@ -56,6 +57,38 @@
     .next-button-container button:hover {
         background-color: #2980b9;
     }
+
+    .logo-container {
+        position: absolute;
+        bottom: 15px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+    }
+
+    .logo-container img {
+        height: auto;
+    }
+
+    .logo-container img:first-child {
+        width: 180px;
+    }
+
+    .logo-container img:last-child {
+        width: 250px;
+    }
+
+    @media (max-width: 600px) {
+        .logo-container img:first-child {
+            width: 120px;
+        }
+        .logo-container img:last-child {
+            width: 145px;
+        }
+    }
 </style>
 
 <div class="instruction-box">
@@ -71,6 +104,11 @@
 
     <div class="next-button-container">
         {{ next_button }}
+    </div>
+
+    <div class="logo-container">
+        <img src="{{ static 'images/ODISSEI-logo.png' }}" alt="ODISSEI Logo">
+        <img src="{{ static 'images/UU_logo_2021_EN_RGB.png' }}" alt="Utrecht University Logo">
     </div>
 </div>
 
