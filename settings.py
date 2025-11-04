@@ -4,7 +4,8 @@ SESSION_CONFIGS = [
     dict(
         name='Trust_Game',
         num_demo_participants=300,
-        app_sequence=['role_assignment', 'truster', 'trustee']
+        app_sequence=['role_assignment', 'truster', 'trustee'],
+        use_browser_bots =False
     )
 ]
 

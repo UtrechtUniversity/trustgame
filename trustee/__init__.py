@@ -25,7 +25,7 @@ def group_by_arrival_time_method(subsession: Subsession, waiting_players):
     return None
 
 class Group(BaseGroup):
-    sent_back_amount = models.CurrencyField(min=0, label="", null=True, blank=True)
+    sent_back_amount = models.CurrencyField(min=0, label="", blank=False)
 
     def set_payoffs(self):
         a = self.get_player_by_role('A')
@@ -52,6 +52,7 @@ class MatchWait(WaitPage):
     title_text = "Please wait"
     body_text = "You will be paired with another player ..."
 
+
 class SendBack(Page):
     form_model = 'group'
     form_fields = ['sent_back_amount']
@@ -77,6 +78,11 @@ class SendBack(Page):
         a = player.group.get_player_by_role('A')
         sent = a.participant.vars.get('sent_amount', cu(0))
         tripled = sent * C.MULTIPLIER
+
+        sent_back = values.get('sent_back_amount')
+
+        if sent_back is None:
+            return None
 
         if values['sent_back_amount'] > tripled:
             return f"You cannot send back more than {tripled}."
